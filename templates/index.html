@@ -32,6 +32,8 @@
         let lastSender = null;
         let lastMessageTime = 0;
         const TIME_GAP = 5 * 60 * 1000; // 5 min
+        let inactivityTimer = null;
+        let lastUserMessage = "";
         
         // Emoji configuration
         let emojiConfig = {};
@@ -92,7 +94,14 @@
             let msg = input.value.trim();
             if (!msg) return;
 
+            // Clear inactivity timer
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = null;
+            }
+
             appendMessage("user", msg, "{{ config.user_avatar }}", "{{ config.user_name }}", "", new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+            lastUserMessage = msg;
             input.value = "";
 
             // Show typing indicator
@@ -111,6 +120,9 @@
             typingIndicator.style.display = "none";
 
             appendMessage("bot", data.reply, "{{ config.bot_avatar }}", "{{ config.bot_name }}", "", data.timestamp);
+            
+            // Start inactivity timer
+            startInactivityTimer();
         }
 
         document.getElementById("send-btn").onclick = sendMessage;
@@ -119,6 +131,51 @@
             if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
+            }
+        });
+        
+        // Inactivity timer functions
+        function startInactivityTimer() {
+            const timeoutSeconds = parseInt("{{ config.inactivity_timeout }}");
+            inactivityTimer = setTimeout(async () => {
+                await sendInactivityMessage();
+            }, timeoutSeconds * 1000);
+        }
+        
+        async function sendInactivityMessage() {
+            // Show typing indicator
+            const typingIndicator = document.getElementById("typing-indicator");
+            typingIndicator.style.display = "block";
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+            
+            let res = await fetch("/inactivity_message", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({last_message: lastUserMessage})
+            });
+            let data = await res.json();
+            
+            // Hide typing indicator
+            typingIndicator.style.display = "none";
+            
+            appendMessage("bot", data.reply, "{{ config.bot_avatar }}", "{{ config.bot_name }}", "", data.timestamp);
+            
+            // Restart timer for next inactivity check
+            startInactivityTimer();
+        }
+        
+        // Track user input activity
+        input.addEventListener("input", function() {
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = null;
+            }
+        });
+        
+        input.addEventListener("keydown", function(e) {
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = null;
             }
         });
         

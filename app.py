@@ -18,7 +18,8 @@ def load_config():
         "user_name": "You",
         "user_avatar": "/static/user.png",
         "model": "llama3",
-        "response_delay": 6
+        "response_delay": 6,
+        "inactivity_timeout": 30
     }
 
 def save_config(config):
@@ -55,6 +56,28 @@ def send_message():
         "timestamp": datetime.now().strftime("%I:%M %p")
     })
 
+@app.route("/inactivity_message", methods=["POST"])
+def inactivity_message():
+    data = request.json
+    last_message = data.get("last_message", "")
+    
+    config = load_config()
+    model = config.get("model", "llama3")
+    
+    # Create context-aware inactivity message
+    context = f"User's last message was: '{last_message}'. They haven't responded for a while. Send a brief, friendly message to re-engage them while staying on topic. Keep it under 2 sentences."
+    
+    response = ollama.chat(
+        model=model,
+        messages=[{"role": "user", "content": context}]
+    )
+    inactivity_reply = response["message"]["content"]
+    
+    return jsonify({
+        "reply": inactivity_reply,
+        "timestamp": datetime.now().strftime("%I:%M %p")
+    })
+
 @app.route("/update_settings", methods=["POST"])
 def update_settings():
     data = request.form
@@ -64,6 +87,7 @@ def update_settings():
     config["user_name"] = data.get("user_name", config["user_name"])
     config["user_avatar"] = data.get("user_avatar", config["user_avatar"])
     config["response_delay"] = int(data.get("response_delay", config["response_delay"]))
+    config["inactivity_timeout"] = int(data.get("inactivity_timeout", config["inactivity_timeout"]))
     save_config(config)
     return "Settings updated", 200
 

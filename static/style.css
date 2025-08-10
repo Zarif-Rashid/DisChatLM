@@ -21,15 +21,15 @@ body {
 }
 
 .message-group {
-    margin-bottom: 16px;
-    padding: 2px 0;
+    margin-bottom: 5px;
+    padding: 1px 0;
 }
 
 .header {
     display: flex;
     align-items: center;
-    margin-bottom: 4px;
-    padding: 2px 0;
+    margin-bottom: 1px;
+    padding: 1px 0;
 }
 
 .avatar {
