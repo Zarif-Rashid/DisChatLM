@@ -15,8 +15,10 @@ def load_config():
     return {
         "bot_name": "AI Friend",
         "bot_avatar": "/static/default_bot.png",
+        "user_name": "You",
         "user_avatar": "/static/user.png",
-        "model": "llama3"
+        "model": "llama3",
+        "response_delay": 6
     }
 
 def save_config(config):
@@ -35,6 +37,7 @@ def send_message():
 
     config = load_config()
     model = config.get("model", "llama3")
+    response_delay = config.get("response_delay", 6)
 
     # Call Ollama
     response = ollama.chat(
@@ -42,6 +45,10 @@ def send_message():
         messages=[{"role": "user", "content": user_message}]
     )
     ai_reply = response["message"]["content"]
+
+    # Add artificial delay
+    import time
+    time.sleep(response_delay)
 
     return jsonify({
         "reply": ai_reply,
@@ -54,7 +61,9 @@ def update_settings():
     config = load_config()
     config["bot_name"] = data.get("bot_name", config["bot_name"])
     config["bot_avatar"] = data.get("bot_avatar", config["bot_avatar"])
+    config["user_name"] = data.get("user_name", config["user_name"])
     config["user_avatar"] = data.get("user_avatar", config["user_avatar"])
+    config["response_delay"] = int(data.get("response_delay", config["response_delay"]))
     save_config(config)
     return "Settings updated", 200
 
