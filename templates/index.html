@@ -20,6 +20,33 @@
         let lastSender = null;
         let lastMessageTime = 0;
         const TIME_GAP = 5 * 60 * 1000; // 5 min
+        
+        // Emoji configuration
+        let emojiConfig = {};
+        
+        // Load emoji configuration
+        async function loadEmojiConfig() {
+            try {
+                const response = await fetch('/static/emojis/emoji_config.json');
+                emojiConfig = await response.json();
+            } catch (error) {
+                console.log('No emoji config found or error loading it');
+            }
+        }
+        
+        // Process text to replace emoji codes with images
+        function processEmojis(text) {
+            if (!emojiConfig || Object.keys(emojiConfig).length === 0) {
+                return text;
+            }
+            
+            return text.replace(/:(\w+):/g, function(match, emojiCode) {
+                if (emojiConfig[emojiCode]) {
+                    return `<img src="/static/emojis/${emojiConfig[emojiCode]}" class="emoji" alt=":${emojiCode}:" title=":${emojiCode}:">`;
+                }
+                return match; // Return original if emoji not found
+            });
+        }
 
         function appendMessage(senderType, text, avatar, username, badge, time) {
             let now = new Date();
@@ -42,7 +69,7 @@
             }
 
             msgGroup.innerHTML += `
-                <div class="message-text">${text}</div>
+                <div class="message-text">${processEmojis(text)}</div>
             `;
 
             chatWindow.appendChild(msgGroup);
@@ -74,6 +101,9 @@
                 sendMessage();
             }
         });
+        
+        // Load emoji config when page loads
+        loadEmojiConfig();
     </script>
 </body>
 </html>
