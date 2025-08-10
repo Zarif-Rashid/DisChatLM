@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-window"></div>
+        <div id="input-container">
+            <textarea id="message-input" placeholder="Message @{{ config.bot_name }}"></textarea>
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatWindow = document.getElementById("chat-window");
+        const input = document.getElementById("message-input");
+
+        let lastSender = null;
+        let lastMessageTime = 0;
+        const TIME_GAP = 5 * 60 * 1000; // 5 min
+
+        function appendMessage(senderType, text, avatar, username, badge, time) {
+            let now = new Date();
+            let showHeader = senderType !== lastSender || (now - lastMessageTime > TIME_GAP);
+            lastSender = senderType;
+            lastMessageTime = now;
+
+            let msgGroup = document.createElement("div");
+            msgGroup.className = "message-group";
+
+            if (showHeader) {
+                msgGroup.innerHTML += `
+                    <div class="header">
+                        <img src="${avatar}" class="avatar">
+                        <span class="username">${username}</span>
+                        ${badge ? `<img src="${badge}" class="badge">` : ""}
+                        <span class="timestamp">${time}</span>
+                    </div>
+                `;
+            }
+
+            msgGroup.innerHTML += `
+                <div class="message-text">${text}</div>
+            `;
+
+            chatWindow.appendChild(msgGroup);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        async function sendMessage() {
+            let msg = input.value.trim();
+            if (!msg) return;
+
+            appendMessage("user", msg, "{{ config.user_avatar }}", "You", "", new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
+            input.value = "";
+
+            let res = await fetch("/send_message", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: msg})
+            });
+            let data = await res.json();
+
+            appendMessage("bot", data.reply, "{{ config.bot_avatar }}", "{{ config.bot_name }}", "", data.timestamp);
+        }
+
+        document.getElementById("send-btn").onclick = sendMessage;
+
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
