@@ -65,7 +65,7 @@ def inactivity_message():
     model = config.get("model", "llama3")
     
     # Create context-aware inactivity message
-    context = f"User's last message was: '{last_message}'. They haven't responded for a while. Send a brief, friendly message to re-engage them while staying on topic. Keep it under 2 sentences."
+    context = f"User's last message was: '{last_message}'. They haven't responded for a while. Send a brief, friendly message to re-engage them while staying on topic, continuing your last message. Keep it long long and friendly"
     
     response = ollama.chat(
         model=model,

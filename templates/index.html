@@ -73,18 +73,23 @@
 
             if (showHeader) {
                 msgGroup.innerHTML += `
-                    <div class="header">
+                    <div class="message-row">
                         <img src="${avatar}" class="avatar">
-                        <span class="username">${username}</span>
-                        ${badge ? `<img src="${badge}" class="badge">` : ""}
-                        <span class="timestamp">${time}</span>
+                        <div class="message-content">
+                            <div class="header">
+                                <span class="username">${username}</span>
+                                ${badge ? `<img src="${badge}" class="badge">` : ""}
+                                <span class="timestamp">${time}</span>
+                            </div>
+                            <div class="message-text">${processEmojis(text)}</div>
+                        </div>
                     </div>
                 `;
+            } else {
+                msgGroup.innerHTML += `
+                    <div class="message-text message-continuation">${processEmojis(text)}</div>
+                `;
             }
-
-            msgGroup.innerHTML += `
-                <div class="message-text">${processEmojis(text)}</div>
-            `;
 
             chatWindow.appendChild(msgGroup);
             chatWindow.scrollTop = chatWindow.scrollHeight;

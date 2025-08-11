@@ -1,5 +1,5 @@
 body {
-    background-color: #313338;
+    background-color: #1a1a1e;
     font-family: "gg sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: #dcddde;
     margin: 0;
@@ -25,31 +25,40 @@ body {
     padding: 1px 0;
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1px;
-    padding: 1px 0;
+/* Two-column row: avatar | content */
+.message-row {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    column-gap: 12px;
+    align-items: start;
 }
 
 .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 12px;
-    flex-shrink: 0;
+    grid-row: 1 / span 2; /* span header + first line */
+}
+
+.message-content {
+    min-width: 0; /* allow wrapping */
+}
+
+.header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 1px;
 }
 
 .username {
     font-weight: 600;
     color: #ffffff;
-    margin-right: 8px;
     font-size: 16px;
 }
 
 .badge {
     height: 16px;
-    margin-right: 6px;
 }
 
 .timestamp {
@@ -59,12 +68,16 @@ body {
 }
 
 .message-text {
-    margin-left: 52px;
     white-space: pre-wrap;
     line-height: 1.4;
     font-size: 15px;
     color: #dcddde;
     word-wrap: break-word;
+}
+
+/* Continuations (no avatar row) align with message text */
+.message-continuation {
+    margin-left: calc(40px + 12px);
 }
 
 #input-container {
@@ -229,14 +242,6 @@ body {
     .typing-indicator {
         padding: 6px 16px;
     }
-    
-    .typing-content {
-        gap: 6px;
-    }
-    
-    .typing-text {
-        font-size: 13px;
-    }
 }
 
 @media (max-width: 480px) {
@@ -260,13 +265,5 @@ body {
     
     .typing-indicator {
         padding: 4px 12px;
-    }
-    
-    .typing-content {
-        gap: 4px;
-    }
-    
-    .typing-text {
-        font-size: 12px;
     }
 }
