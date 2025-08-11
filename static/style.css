@@ -13,6 +13,92 @@ body {
     max-width: 100%;
 }
 
+/* Chat Header */
+#chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2b2d31;
+    padding: 12px 20px;
+    border-bottom: 1px solid #1e1f22;
+    min-height: 48px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-avatar-container {
+    position: relative;
+    display: inline-block;
+}
+
+.header-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.status-indicator {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #43b581;
+    border: 3px solid #2b2d31;
+    border-radius: 50%;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.header-name {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.header-status {
+    font-size: 12px;
+    color: #b9bbbe;
+    font-weight: 400;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.header-btn {
+    background: none;
+    border: none;
+    color: #b9bbbe;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-btn:hover {
+    background-color: #404249;
+    color: #dcddde;
+}
+
+.header-btn:active {
+    background-color: #35373c;
+}
+
 #chat-window {
     flex: 1;
     overflow-y: auto;
@@ -21,7 +107,7 @@ body {
 }
 
 .message-group {
-    margin-bottom: 5px;
+    margin-bottom: 16px;
     padding: 1px 0;
 }
 
@@ -221,6 +307,33 @@ body {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    #chat-header {
+        padding: 8px 16px;
+    }
+    
+    .header-avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .status-indicator {
+        width: 8px;
+        height: 8px;
+        border-width: 2px;
+    }
+    
+    .header-name {
+        font-size: 14px;
+    }
+    
+    .header-status {
+        font-size: 11px;
+    }
+    
+    .header-btn {
+        padding: 6px;
+    }
+    
     #input-container {
         padding: 8px 16px;
         gap: 8px;
@@ -245,6 +358,38 @@ body {
 }
 
 @media (max-width: 480px) {
+    #chat-header {
+        padding: 6px 12px;
+    }
+    
+    .header-avatar {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .status-indicator {
+        width: 7px;
+        height: 7px;
+        border-width: 2px;
+    }
+    
+    .header-name {
+        font-size: 13px;
+    }
+    
+    .header-status {
+        font-size: 10px;
+    }
+    
+    .header-btn {
+        padding: 4px;
+    }
+    
+    .header-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+    
     #input-container {
         padding: 6px 12px;
         gap: 6px;

@@ -6,6 +6,42 @@
 </head>
 <body>
     <div id="chat-container">
+        <div id="chat-header">
+            <div class="header-left">
+                <div class="header-avatar-container">
+                    <img src="{{ config.bot_avatar }}" class="header-avatar">
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="header-info">
+                    <span class="header-name">{{ config.bot_name }}</span>
+                    <span class="header-status">Online</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="header-btn" title="Call">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19c-.54 0-.99.45-.99.99 0 9.36 7.6 16.96 16.96 16.96.54 0 .99-.45.99-.99v-3.5c0-.54-.45-.99-.99-.99z"/>
+                    </svg>
+                </button>
+                <button class="header-btn" title="Video Call">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                    </svg>
+                </button>
+                <button class="header-btn" title="Pin Message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
+                    </svg>
+                </button>
+                <button class="header-btn" title="More Options">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="2"/>
+                        <circle cx="4" cy="12" r="2"/>
+                        <circle cx="20" cy="12" r="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
         <div id="chat-window"></div>
         <div id="typing-indicator" class="typing-indicator" style="display: none;">
             <div class="typing-content">
