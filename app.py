@@ -43,7 +43,7 @@ def send_message():
     config = load_config()
     model = config.get("model", "llama3")
     response_delay = config.get("response_delay", 6)
-    system_prompt = config.get("system_prompt", "You are a helpful, friendly AI assistant.")
+    system_prompt = config.get("system_prompt", "You are a helpful, friendly AI chatbot.")
 
     # Add user message to history
     conversation_history.append({"role": "user", "content": user_message})
@@ -122,6 +122,9 @@ def update_settings():
     config["response_delay"] = int(data.get("response_delay", config["response_delay"]))
     config["inactivity_timeout"] = int(data.get("inactivity_timeout", config["inactivity_timeout"]))
     config["system_prompt"] = data.get("system_prompt", config.get("system_prompt", "You are a helpful, friendly AI assistant."))
+    config["profile_banner_color"] = data.get("profile_banner_color", config.get("profile_banner_color", "#ffb3d9"))
+    config["profile_about_me"] = data.get("profile_about_me", config.get("profile_about_me", "AI Companion • Always here to chat! 😊\nLoves helping people and making friends\nEnthusiastic and curious about everything\nLet's have fun conversations together! 💖"))
+    config["profile_member_since"] = data.get("profile_member_since", config.get("profile_member_since", "Jan 15, 2024"))
     save_config(config)
     return "Settings updated", 200
 

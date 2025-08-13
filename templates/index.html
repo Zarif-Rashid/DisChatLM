@@ -5,59 +5,112 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div id="chat-container">
-        <div id="chat-header">
-            <div class="header-left">
-                <div class="header-avatar-container">
-                    <img src="{{ config.bot_avatar }}" class="header-avatar">
-                    <div class="status-indicator"></div>
+    <div id="main-container">
+        <div id="chat-container">
+            <div id="chat-header">
+                <div class="header-left">
+                    <div class="header-avatar-container">
+                        <img src="{{ config.bot_avatar }}" class="header-avatar">
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="header-info">
+                        <span class="header-name">{{ config.bot_name }}</span>
+                        <span class="header-status">Online</span>
+                    </div>
                 </div>
-                <div class="header-info">
-                    <span class="header-name">{{ config.bot_name }}</span>
-                    <span class="header-status">Online</span>
+                <div class="header-right">
+                    <button class="header-btn" title="Call">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19c-.54 0-.99.45-.99.99 0 9.36 7.6 16.96 16.96 16.96.54 0 .99-.45.99-.99v-3.5c0-.54-.45-.99-.99-.99z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" title="Video Call">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" title="Pin Message">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
+                        </svg>
+                    </button>
+                    <button class="header-btn" title="More Options">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="2"/>
+                            <circle cx="4" cy="12" r="2"/>
+                            <circle cx="20" cy="12" r="2"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <div class="header-right">
-                <button class="header-btn" title="Call">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19c-.54 0-.99.45-.99.99 0 9.36 7.6 16.96 16.96 16.96.54 0 .99-.45.99-.99v-3.5c0-.54-.45-.99-.99-.99z"/>
-                    </svg>
-                </button>
-                <button class="header-btn" title="Video Call">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                    </svg>
-                </button>
-                <button class="header-btn" title="Pin Message">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"/>
-                    </svg>
-                </button>
-                <button class="header-btn" title="More Options">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="12" r="2"/>
-                        <circle cx="4" cy="12" r="2"/>
-                        <circle cx="20" cy="12" r="2"/>
-                    </svg>
-                </button>
+            <div id="chat-window"></div>
+            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                <div class="typing-content">
+                    <img src="{{ config.bot_avatar }}" class="avatar">
+                    <span class="username">{{ config.bot_name }}</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="typing-text">is typing...</span>
+                </div>
+            </div>
+            <div id="input-container">
+                <textarea id="message-input" placeholder="Message @{{ config.bot_name }}"></textarea>
+                <button id="send-btn">Send</button>
             </div>
         </div>
-        <div id="chat-window"></div>
-        <div id="typing-indicator" class="typing-indicator" style="display: none;">
-            <div class="typing-content">
-                <img src="{{ config.bot_avatar }}" class="avatar">
-                <span class="username">{{ config.bot_name }}</span>
-                <div class="typing-dots">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        
+        <div id="resize-handle"></div>
+        
+        <div id="profile-panel">
+            <div class="profile-header">
+                <div class="profile-banner" style="background-color: {{ config.profile_banner_color }}"></div>
+                <div class="profile-avatar-container">
+                    <img src="{{ config.bot_avatar }}" class="profile-avatar">
                 </div>
-                <span class="typing-text">is typing...</span>
+                <div class="profile-info">
+                    <h2 class="profile-username">{{ config.bot_name }}</h2>
+                    <p class="profile-tag">AI Companion • Online 💖</p>
+                </div>
             </div>
-        </div>
-        <div id="input-container">
-            <textarea id="message-input" placeholder="Message @{{ config.bot_name }}"></textarea>
-            <button id="send-btn">Send</button>
+            
+            <div class="profile-content">
+                <div class="profile-section">
+                    <h3>About Me</h3>
+                    <div class="about-me-text">
+                        {% for line in config.profile_about_me.split('\n') %}
+                            <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="profile-section">
+                    <h3>Member Since</h3>
+                    <p class="member-since">{{ config.profile_member_since }}</p>
+                </div>
+                
+                <div class="profile-section">
+                    <h3>Status</h3>
+                    <p class="status-text">🟢 Online - Ready to chat!</p>
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button class="profile-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    Message
+                </button>
+                <button class="profile-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    More
+                </button>
+            </div>
         </div>
     </div>
 
@@ -222,6 +275,52 @@
         
         // Load emoji config when page loads
         loadEmojiConfig();
+        
+        // Resizable profile panel functionality
+        const resizeHandle = document.getElementById('resize-handle');
+        const chatContainer = document.getElementById('chat-container');
+        const profilePanel = document.getElementById('profile-panel');
+        const mainContainer = document.getElementById('main-container');
+        
+        let isResizing = false;
+        let startX, startWidth;
+        
+        resizeHandle.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            startX = e.clientX;
+            startWidth = parseInt(getComputedStyle(chatContainer).width, 10);
+            document.body.style.cursor = 'col-resize';
+            e.preventDefault();
+        });
+        
+        document.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
+            
+            const width = startWidth - (e.clientX - startX);
+            const minWidth = 300; // Minimum chat width
+            const maxWidth = window.innerWidth - 200; // Maximum chat width (leaving space for profile)
+            
+            if (width >= minWidth && width <= maxWidth) {
+                chatContainer.style.width = width + 'px';
+            }
+        });
+        
+        document.addEventListener('mouseup', function() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = 'default';
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const chatWidth = parseInt(getComputedStyle(chatContainer).width, 10);
+            const maxWidth = window.innerWidth - 200;
+            
+            if (chatWidth > maxWidth) {
+                chatContainer.style.width = maxWidth + 'px';
+            }
+        });
     </script>
 </body>
 </html>
