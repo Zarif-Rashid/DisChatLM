@@ -1,3 +1,14 @@
+.profile-status-indicator {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background-color: #43b581;
+    border: 4px solid #2b2d31;
+    border-radius: 50%;
+    z-index: 2;
+}
 body {
     background-color: #1a1a1e;
     font-family: "gg sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -10,22 +21,28 @@ body {
     display: flex;
     height: 100vh;
     width: 100%;
+    position: relative;
 }
 
 #chat-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: calc(100% - 300px);
+    flex: 1 1 auto;
     min-width: 300px;
     max-width: calc(100% - 200px);
 }
 
 #resize-handle {
-    width: 4px;
+    position: absolute;
+    top: 0;
+    right: 300px;
+    width: 6px;
+    height: 100%;
     background-color: #1e1f22;
     cursor: col-resize;
     transition: background-color 0.2s ease;
+    z-index: 10;
 }
 
 #resize-handle:hover {
@@ -39,6 +56,9 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    min-width: 200px;
+    max-width: 600px;
+    flex-shrink: 0;
 }
 
 .profile-header {
@@ -47,7 +67,7 @@ body {
 }
 
 .profile-banner {
-    height: 80px;
+    height: 110px;
     width: 100%;
     border-radius: 8px 8px 0 0;
 }
@@ -66,7 +86,7 @@ body {
 }
 
 .profile-info {
-    padding: 90px 16px 0 16px;
+    padding: 50px 16px 0 16px;
 }
 
 .profile-username {
@@ -481,7 +501,7 @@ body {
     }
     
     .profile-info {
-        padding: 80px 12px 0 12px;
+        padding: 30px 12px 0 12px;
     }
     
     .profile-username {
@@ -538,7 +558,7 @@ body {
     }
     
     .profile-info {
-        padding: 70px 12px 0 12px;
+        padding: 30px 12px 0 12px;
     }
     
     .profile-username {

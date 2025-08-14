@@ -69,10 +69,11 @@
                 <div class="profile-banner" style="background-color: {{ config.profile_banner_color }}"></div>
                 <div class="profile-avatar-container">
                     <img src="{{ config.bot_avatar }}" class="profile-avatar">
+                    <div class="profile-status-indicator"></div>
                 </div>
                 <div class="profile-info">
                     <h2 class="profile-username">{{ config.bot_name }}</h2>
-                    <p class="profile-tag">AI Companion • Online 💖</p>
+                    <p class="profile-tag">She/Her • Online</p>
                 </div>
             </div>
             
@@ -90,26 +91,6 @@
                     <h3>Member Since</h3>
                     <p class="member-since">{{ config.profile_member_since }}</p>
                 </div>
-                
-                <div class="profile-section">
-                    <h3>Status</h3>
-                    <p class="status-text">🟢 Online - Ready to chat!</p>
-                </div>
-            </div>
-            
-            <div class="profile-actions">
-                <button class="profile-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    Message
-                </button>
-                <button class="profile-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    More
-                </button>
             </div>
         </div>
     </div>
@@ -277,48 +258,45 @@
         loadEmojiConfig();
         
         // Resizable profile panel functionality
+        // Resizable profile panel functionality (right sidebar)
         const resizeHandle = document.getElementById('resize-handle');
-        const chatContainer = document.getElementById('chat-container');
         const profilePanel = document.getElementById('profile-panel');
-        const mainContainer = document.getElementById('main-container');
-        
         let isResizing = false;
         let startX, startWidth;
-        
+
         resizeHandle.addEventListener('mousedown', function(e) {
             isResizing = true;
             startX = e.clientX;
-            startWidth = parseInt(getComputedStyle(chatContainer).width, 10);
+            startWidth = parseInt(getComputedStyle(profilePanel).width, 10);
             document.body.style.cursor = 'col-resize';
             e.preventDefault();
         });
-        
+
         document.addEventListener('mousemove', function(e) {
             if (!isResizing) return;
-            
-            const width = startWidth - (e.clientX - startX);
-            const minWidth = 300; // Minimum chat width
-            const maxWidth = window.innerWidth - 200; // Maximum chat width (leaving space for profile)
-            
-            if (width >= minWidth && width <= maxWidth) {
-                chatContainer.style.width = width + 'px';
-            }
+            const dx = startX - e.clientX;
+            let newWidth = startWidth + dx;
+            const minWidth = 200;
+            const maxWidth = 600;
+            if (newWidth < minWidth) newWidth = minWidth;
+            if (newWidth > maxWidth) newWidth = maxWidth;
+            profilePanel.style.width = newWidth + 'px';
+            // Move the handle to the left edge of the profile panel
+            resizeHandle.style.right = newWidth + 'px';
         });
-        
+
+        // Set initial handle position on page load and after resizing
+        function updateResizeHandlePosition() {
+            const width = parseInt(getComputedStyle(profilePanel).width, 10);
+            resizeHandle.style.right = width + 'px';
+        }
+        window.addEventListener('resize', updateResizeHandlePosition);
+        document.addEventListener('DOMContentLoaded', updateResizeHandlePosition);
+
         document.addEventListener('mouseup', function() {
             if (isResizing) {
                 isResizing = false;
                 document.body.style.cursor = 'default';
-            }
-        });
-        
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const chatWidth = parseInt(getComputedStyle(chatContainer).width, 10);
-            const maxWidth = window.innerWidth - 200;
-            
-            if (chatWidth > maxWidth) {
-                chatContainer.style.width = maxWidth + 'px';
             }
         });
     </script>
