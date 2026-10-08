@@ -46,7 +46,7 @@
             <div id="chat-window"></div>
             <div id="typing-indicator" class="typing-indicator" style="display: none;">
                 <div class="typing-content">
-                    <img src="{{ config.bot_avatar }}" class="avatar">
+                    <!-- <img src="{{ config.bot_avatar }}" class="avatar"> -->
                     <span class="username">{{ config.bot_name }}</span>
                     <div class="typing-dots">
                         <span></span>
@@ -180,6 +180,10 @@
             input.value = "";
 
             // Show typing indicator
+            
+            // wait for 2 seconds
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             const typingIndicator = document.getElementById("typing-indicator");
             typingIndicator.style.display = "block";
             chatWindow.scrollTop = chatWindow.scrollHeight;

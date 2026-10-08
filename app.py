@@ -39,7 +39,7 @@ def send_message():
     global conversation_history
     data = request.json
     user_message = data.get("message", "")
-
+    
     config = load_config()
     model = config.get("model", "llama3")
     response_delay = config.get("response_delay", 6)
@@ -130,3 +130,5 @@ def update_settings():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+# TBA

@@ -355,7 +355,7 @@ body {
     background-color: #404249;
     border: none;
     color: #dcddde;
-    padding: 8px 16px;
+    padding: 1px 16px;
     resize: none;
     min-height: 36px;
     max-height: 120px;
@@ -364,6 +364,8 @@ body {
     border-radius: 18px;
     outline: none;
     transition: background-color 0.2s ease;
+    display: flex;
+    vertical-align: baseline;
 }
 
 #message-input:focus {
